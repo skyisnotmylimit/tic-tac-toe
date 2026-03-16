@@ -6,10 +6,6 @@ export const WINNING_COMBINATIONS: readonly number[][] = [
 
 export const BOARD_SIZE = 9;
 
-export const BEST_OF = 3;
-
-export const WINS_NEEDED = 2;
-
 export const ROUND_TRANSITION_DELAY_MS = 1500;
 
 export const TURN_TIMER_SECONDS = 15;

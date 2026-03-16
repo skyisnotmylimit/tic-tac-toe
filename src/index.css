@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @keyframes confetti-fall {
   0% {
     transform: translateY(0) rotate(0deg);

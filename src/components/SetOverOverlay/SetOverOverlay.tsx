@@ -8,12 +8,12 @@ interface SetOverOverlayProps {
 
 export function SetOverOverlay({ winnerName, isCreator, onRestart }: SetOverOverlayProps) {
   return (
-    <div className="absolute inset-0 z-10 bg-slate-900/90 backdrop-blur-sm flex flex-col items-center justify-center rounded-xl p-6 text-center animate-in fade-in zoom-in duration-300">
+    <div className="absolute inset-0 z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm flex flex-col items-center justify-center rounded-xl p-6 text-center animate-in fade-in zoom-in duration-300">
       <div className="bg-yellow-500/20 p-4 rounded-full mb-4">
         <Medal size={48} className="text-yellow-500" />
       </div>
-      <h2 className="text-2xl font-bold mb-2">Set Winner!</h2>
-      <p className="text-4xl font-black text-white mb-8">{winnerName}</p>
+      <h2 className="text-2xl font-bold mb-2 text-slate-900 dark:text-white">Set Winner!</h2>
+      <p className="text-4xl font-black text-slate-900 dark:text-white mb-8">{winnerName}</p>
       {isCreator ? (
         <button
           onClick={onRestart}
@@ -22,7 +22,7 @@ export function SetOverOverlay({ winnerName, isCreator, onRestart }: SetOverOver
           <RotateCcw size={18} /> Restart Set
         </button>
       ) : (
-        <p className="text-slate-400 italic">Waiting for host to restart...</p>
+        <p className="text-slate-500 dark:text-slate-400 italic">Waiting for host to restart...</p>
       )}
     </div>
   );

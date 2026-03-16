@@ -10,7 +10,7 @@ interface BoardProps {
 
 export function Board({ board, winningLine, isMyTurn, onMove }: BoardProps) {
   return (
-    <div className="grid grid-cols-3 gap-3 bg-slate-800 p-3 rounded-xl shadow-2xl border border-slate-700">
+    <div className="grid grid-cols-3 gap-3 bg-white dark:bg-slate-800 p-3 rounded-xl shadow-2xl border border-slate-300 dark:border-slate-700">
       {board.map((cell, i) => (
         <Square
           key={i}

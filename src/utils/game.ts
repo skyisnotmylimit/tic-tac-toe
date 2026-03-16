@@ -1,5 +1,5 @@
 import type { Board, CellValue, GameData, PlayerSymbol, Scores, WinnerInfo } from '../types/game';
-import { BEST_OF, BOARD_SIZE, WINNING_COMBINATIONS, WINS_NEEDED } from '../constants/game';
+import { BOARD_SIZE, WINNING_COMBINATIONS } from '../constants/game';
 
 export function checkWinner(board: Board): WinnerInfo | null {
   for (const combo of WINNING_COMBINATIONS) {
@@ -29,10 +29,8 @@ export function isPlayerTurn(gameData: GameData, uid: string): boolean {
 }
 
 interface RoundResult {
-  nextStatus: GameData['status'];
-  setWinner: string | null;
-  nextGameNum: number;
   newScores: Scores;
+  nextGameNum: number;
 }
 
 export function resolveRound(
@@ -45,26 +43,7 @@ export function resolveRound(
   else if (winnerInfo?.symbol === 'O') newScores.p2 += 1;
   else newScores.draws += 1;
 
-  let nextStatus: GameData['status'] = 'playing';
-  let setWinner: string | null = null;
-  let nextGameNum = gameData.currentGameNum;
-
-  if (newScores.p1 >= WINS_NEEDED) {
-    setWinner = gameData.players.p1.name;
-    nextStatus = 'set-over';
-  } else if (newScores.p2 >= WINS_NEEDED) {
-    setWinner = gameData.players.p2.name;
-    nextStatus = 'set-over';
-  } else if (gameData.currentGameNum === BEST_OF) {
-    if (newScores.p1 > newScores.p2) setWinner = gameData.players.p1.name;
-    else if (newScores.p2 > newScores.p1) setWinner = gameData.players.p2.name;
-    else setWinner = 'Tournament Draw';
-    nextStatus = 'set-over';
-  } else {
-    nextGameNum += 1;
-  }
-
-  return { nextStatus, setWinner, nextGameNum, newScores };
+  return { newScores, nextGameNum: gameData.currentGameNum + 1 };
 }
 
 export function buildInviteLink(gameId: string): string {

@@ -27,7 +27,6 @@ function getInitialGameId(): string | null {
 
 export function useGame(user: FirebaseUser | null) {
   const [gameId, setGameId] = useState<string | null>(getInitialGameId);
-  const [isCreator, setIsCreator] = useState(!getInitialGameId());
   const [gameData, setGameData] = useState<GameData | null>(null);
   const [gameScreen, setGameScreen] = useState<GameScreen>('setup');
   const gameDataRef = useRef<GameData | null>(null);
@@ -51,7 +50,7 @@ export function useGame(user: FirebaseUser | null) {
           setGameData(data);
 
           if (data.status === 'playing') setGameScreen('playing');
-          if (data.status === 'set-over') setGameScreen('set-over');
+          if (data.status === 'ended') setGameScreen('ended');
         }
       },
       (error) => {
@@ -91,7 +90,6 @@ export function useGame(user: FirebaseUser | null) {
       try {
         await setDoc(gameRef, initialData);
         setGameId(newGameId);
-        setIsCreator(true);
         setGameScreen('lobby');
       } catch (err) {
         console.error('Create game error:', err);
@@ -148,7 +146,7 @@ export function useGame(user: FirebaseUser | null) {
       const gameRef = getGameRef(gameId);
 
       if (winnerInfo || boardIsDraw) {
-        const { nextStatus, setWinner, nextGameNum, newScores } = resolveRound(
+        const { newScores, nextGameNum } = resolveRound(
           winnerInfo,
           currentGame
         );
@@ -163,15 +161,14 @@ export function useGame(user: FirebaseUser | null) {
         });
 
         setTimeout(async () => {
+          const startsWithX = nextGameNum % 2 === 1;
           await updateDoc(gameRef, {
             board: createEmptyBoard(),
             winningLine: null,
-            isXNext: true,
-            status: nextStatus,
-            setWinner,
+            isXNext: startsWithX,
             currentGameNum: nextGameNum,
             moveHistory: [],
-            turnStartedAt: nextStatus === 'playing' ? Date.now() : null,
+            turnStartedAt: Date.now(),
           });
         }, ROUND_TRANSITION_DELAY_MS);
       } else {
@@ -186,25 +183,6 @@ export function useGame(user: FirebaseUser | null) {
     },
     [user, gameId]
   );
-
-  const resetSet = useCallback(async () => {
-    if (!gameId || !user) return;
-
-    const gameRef = getGameRef(gameId);
-    await updateDoc(gameRef, {
-      board: createEmptyBoard(),
-      isXNext: true,
-      scores: { p1: 0, p2: 0, draws: 0 },
-      currentGameNum: 1,
-      status: 'playing',
-      winningLine: null,
-      setWinner: null,
-      lastMoveBy: null,
-      turnStartedAt: Date.now(),
-      moveHistory: [],
-      lastReaction: null,
-    });
-  }, [gameId, user]);
 
   const sendReaction = useCallback(
     async (emoji: string) => {
@@ -221,15 +199,30 @@ export function useGame(user: FirebaseUser | null) {
     [gameId, user]
   );
 
+  const endGame = useCallback(async () => {
+    if (!gameId || !user) return;
+    const gameRef = getGameRef(gameId);
+    await updateDoc(gameRef, {
+      status: 'ended',
+      turnStartedAt: null,
+    });
+  }, [gameId, user]);
+
+  const leaveGame = useCallback(() => {
+    setGameId(null);
+    setGameData(null);
+    setGameScreen('setup');
+  }, []);
+
   return {
     gameId,
-    isCreator,
     gameData,
     gameScreen,
     createGame,
     joinGame,
     handleMove,
-    resetSet,
     sendReaction,
+    endGame,
+    leaveGame,
   };
 }

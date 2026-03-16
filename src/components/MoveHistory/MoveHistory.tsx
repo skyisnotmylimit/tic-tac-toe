@@ -13,7 +13,7 @@ export function MoveHistory({ moves }: MoveHistoryProps) {
 
   return (
     <div className="w-full max-w-xs mt-4">
-      <div className="flex items-center gap-1 text-xs text-slate-400 mb-2 uppercase font-bold tracking-wider">
+      <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 mb-2 uppercase font-bold tracking-wider">
         <Clock size={12} /> Move History
       </div>
       <div className="space-y-1">
@@ -22,7 +22,7 @@ export function MoveHistory({ moves }: MoveHistoryProps) {
             key={`${move.cell}-${move.timestamp}`}
             className={`flex items-center gap-2 text-xs px-2 py-1 rounded-md ${
               i === recentMoves.length - 1
-                ? 'bg-slate-700/80 text-white'
+                ? 'bg-slate-200/80 dark:bg-slate-700/80 text-slate-900 dark:text-white'
                 : 'text-slate-500'
             }`}
           >

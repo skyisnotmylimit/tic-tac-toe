@@ -44,7 +44,7 @@ export function EmojiBar({ onSend, lastReaction, currentUserId }: EmojiBarProps)
           <button
             key={emoji}
             onClick={() => onSend(emoji)}
-            className="text-xl hover:scale-125 active:scale-90 transition-transform p-1 rounded-lg hover:bg-slate-700/50"
+            className="text-xl hover:scale-125 active:scale-90 transition-transform p-1 rounded-lg hover:bg-slate-200/50 dark:hover:bg-slate-700/50"
             title={`Send ${emoji}`}
           >
             {emoji}

@@ -6,9 +6,9 @@ export type CellValue = PlayerSymbol | null;
 
 export type Board = CellValue[];
 
-export type GameStatus = 'lobby' | 'playing' | 'set-over';
+export type GameStatus = 'lobby' | 'playing' | 'ended';
 
-export type GameScreen = 'setup' | 'lobby' | 'playing' | 'set-over';
+export type GameScreen = 'setup' | 'lobby' | 'playing' | 'ended';
 
 export interface Player {
   name: string;

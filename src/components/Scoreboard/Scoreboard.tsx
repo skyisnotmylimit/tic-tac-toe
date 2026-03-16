@@ -11,11 +11,11 @@ export function Scoreboard({ gameData, user }: ScoreboardProps) {
 
   return (
     <div className="w-full max-w-xl flex flex-col items-center mt-4 mb-8">
-      <div className="flex items-center gap-2 text-indigo-400 font-bold mb-4 uppercase tracking-widest text-sm">
-        <Trophy size={18} /> Best of 3 Set
+      <div className="flex items-center gap-2 text-indigo-500 dark:text-indigo-400 font-bold mb-4 uppercase tracking-widest text-sm">
+        <Trophy size={18} /> Scoreboard
       </div>
 
-      <div className="grid grid-cols-3 w-full bg-slate-800 rounded-2xl p-4 shadow-xl border border-slate-700 mb-4">
+      <div className="grid grid-cols-3 w-full bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-xl border border-slate-300 dark:border-slate-700 mb-4">
         <PlayerColumn
           label="X"
           isYou={players.p1.id === user.uid}
@@ -25,10 +25,10 @@ export function Scoreboard({ gameData, user }: ScoreboardProps) {
           accentColor="indigo"
         />
 
-        <div className="flex flex-col items-center justify-center border-x border-slate-700">
-          <span className="text-xs text-slate-400 uppercase font-bold mb-1">Game</span>
-          <span className="text-2xl font-black">{currentGameNum}/3</span>
-          <span className="text-xs text-slate-500 mt-1">Draws: {scores.draws}</span>
+        <div className="flex flex-col items-center justify-center border-x border-slate-300 dark:border-slate-700">
+          <span className="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold mb-1">Games</span>
+          <span className="text-2xl font-black">{currentGameNum}</span>
+          <span className="text-xs text-slate-400 dark:text-slate-500 mt-1">Draws: {scores.draws}</span>
         </div>
 
         <PlayerColumn
@@ -60,10 +60,10 @@ function PlayerColumn({ label, isYou, name, score, isActive, accentColor }: Play
   return (
     <div
       className={`flex flex-col items-center p-2 rounded-xl transition-all ${
-        isActive ? `bg-slate-700 ring-2 ${ringClass}` : ''
+        isActive ? `bg-slate-200 dark:bg-slate-700 ring-2 ${ringClass}` : ''
       }`}
     >
-      <span className="text-xs text-slate-400 uppercase font-bold mb-1">
+      <span className="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold mb-1">
         {label} {isYou && '(You)'}
       </span>
       <span className="text-lg font-bold truncate w-full text-center">{name}</span>
